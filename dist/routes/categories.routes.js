@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.categoriesRoutes = void 0;
+const express_1 = require("express");
+const categories_controllers_1 = require("../controllers/categories.controllers");
+const isValidBody_middleware_1 = require("../middlewares/isValidBody.middleware");
+const categoriesSchema_schema_1 = require("../schemas/categoriesSchema.schema");
+const verifyToken_middleware_1 = require("../middlewares/verifyToken.middleware");
+exports.categoriesRoutes = (0, express_1.Router)();
+const categoriesControllers = new categories_controllers_1.CategoriesControllers();
+exports.categoriesRoutes.post("/", verifyToken_middleware_1.verifyToken.execute, isValidBody_middleware_1.IsValidBody.execute({ body: categoriesSchema_schema_1.categorySchema }), categoriesControllers.createCategory);
+exports.categoriesRoutes.delete("/:id", verifyToken_middleware_1.verifyToken.execute, categoriesControllers.deleteCategory);

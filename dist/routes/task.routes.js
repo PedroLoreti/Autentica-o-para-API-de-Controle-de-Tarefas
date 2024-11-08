@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.taskRoutes = void 0;
+const express_1 = require("express");
+const task_controllers_1 = require("../controllers/task.controllers");
+const isValidBody_middleware_1 = require("../middlewares/isValidBody.middleware");
+const taskSchema_schema_1 = require("../schemas/taskSchema.schema");
+const verifyToken_middleware_1 = require("../middlewares/verifyToken.middleware");
+exports.taskRoutes = (0, express_1.Router)();
+const taskControllers = new task_controllers_1.TaskControllers();
+exports.taskRoutes.post("/", verifyToken_middleware_1.verifyToken.execute, isValidBody_middleware_1.IsValidBody.execute({ body: taskSchema_schema_1.createTaskSchema }), taskControllers.createTask);
+exports.taskRoutes.get("/", verifyToken_middleware_1.verifyToken.execute, taskControllers.getTasks);
+exports.taskRoutes.get("/:id", verifyToken_middleware_1.verifyToken.execute, taskControllers.getOneTask);
+exports.taskRoutes.patch("/:id", verifyToken_middleware_1.verifyToken.execute, isValidBody_middleware_1.IsValidBody.execute({ body: taskSchema_schema_1.updateTaskSchema }), taskControllers.updateTask);
+exports.taskRoutes.delete("/:id", verifyToken_middleware_1.verifyToken.execute, taskControllers.deleteTask);
